@@ -1,0 +1,74 @@
+body {
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: Arial, sans-serif;
+  transition: all 0.5s ease;
+}
+
+.weather-container {
+  text-align: center;
+  padding: 2rem;
+  border-radius: 15px;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.weather-icon {
+  font-size: 5rem;
+  margin-bottom: 1rem;
+}
+
+.weather-info {
+  font-size: 1.5rem;
+  color: white;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* 맑음 */
+body.clear {
+  background: linear-gradient(120deg, #a1c4fd, #c2e9fb);
+}
+body.clear .weather-icon::after {
+  content: "☀️";
+}
+
+/* 흐림 */
+body.cloudy {
+  background: linear-gradient(120deg, #89a7b1, #b8c6db);
+}
+body.cloudy .weather-icon::after {
+  content: "☁️";
+}
+
+/* 비 */
+body.rain {
+  background: linear-gradient(120deg, #4b6cb7, #182848);
+}
+body.rain .weather-icon::after {
+  content: "🌧️";
+}
+
+/* 눈 */
+body.snow {
+  background: linear-gradient(120deg, #e6e9f0, #eef1f5);
+}
+body.snow .weather-icon::after {
+  content: "❄️";
+}
+
+.droplet {
+  position: absolute;
+  width: 2px;
+  background: rgba(255, 255, 255, 0.6);
+  animation: fall linear infinite;
+}
+
+@keyframes fall {
+  to {
+    transform: translateY(100vh);
+  }
+}
