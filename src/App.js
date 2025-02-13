@@ -1,27 +1,46 @@
 import './App.css';
+import { useState } from "react";
 
 function App() {
 
-  
-  // const [] = useSata
+  //동적인 상태 ? 날씨, 온도 , 날씨 description 은 어떻게 생각하지 ? 
+  const [weather, setWeather] = useState("");
+  const [temperature, setTemperature] = useState("");
+  const [weatherDescription, setWeatherDescription] = useState("");
+
+  const weatherDescriptions = {
+    clear: "맑음",
+    cloudy: "흐림",
+    rain : "비",
+    snow: "눈",
+};
+
+// 날씨 상태 변경 함수
+  function changeWeather(weather){
+    setWeather(weather);
+    setWeatherDescription(weatherDescriptions[weather]);
+  }
 
 
 
-  // async function getWeatherLatestVersion(){
-  //   const API_KEY ="";
 
-  //   const position = await getCurrentPosition();
-  //   const latitude = position.coords.latitude;
-  //   const logitude = position.coords.logitude;
-  //   const url = await fetch();
-  //      const parsed = await response.json();
 
-  //   let temp = parsed.main.temp;
-  //   temp = Math.round(temp) +  "°C";
+
+  async function getWeatherLatestVersion(){
+    const API_KEY ="";
+
+    const position = await getCurrentPosition();
+    const latitude = position.coords.latitude;
+    const logitude = position.coords.logitude;
+    const url = await fetch();
+    const parsed = await response.json();
+
+    let temp = parsed.main.temp;
+    temp = Math.round(temp) +  "°C";
 
     
   
-  // }
+  }
 
 
 
@@ -30,10 +49,10 @@ function App() {
   return (
     <>
     <header className="header">
-      <button>맑음</button>
-      <button>흐림</button>
-      <button>비</button>
-      <button>눈</button>
+      <button onClick={()=>changeWeather(weather)}>맑음</button>
+      <button onClick={()=>changeWeather(weather)}>흐림</button>
+      <button onClick={()=>changeWeather(weather)}>비</button>
+      <button onClick={()=>changeWeather(weather)}>눈</button>
     </header>
 
     <div className="snow">
