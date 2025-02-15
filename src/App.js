@@ -6,22 +6,19 @@ function App() {
   //동적인 상태 ? 날씨, 온도 , 날씨 description 은 어떻게 생각하지 ? 
   // useState상태 날씨 하나만 만들기 객체로 . 
   const [weather, setWeather] = useState({
-    weatherState:"",
-    description:"",
-    temperature:""
   });
 
-//   const weatherDescriptions = {
-//     clear: "맑음",
-//     cloudy: "흐림",
-//     rain : "비",
-//     snow: "눈",
-// };
+  const weatherDescriptions = {
+    clear: "맑음",
+    cloudy: "흐림",
+    rain : "비",
+    snow: "눈",
+};
 
 // 날씨 상태 변경 함수
   function changeWeather(weather){
-
-
+    
+    setWeather(weather);
   }
 
 
@@ -40,27 +37,32 @@ function App() {
         const position = await getCurrentPosition();
         const latitude = position.coords.latitude;
         const longitude = position.coords.longitude;
-          const result = await fetch()
-          const parsed = await result.json();
+          const result = await fetch();
+           const parsed = await result.json();
           // let temp = parsed.main.temp;
           // temp = Math.round(temp) + "°C";
 
           console.log(parsed);
-        
-          const copyWeather = {...weather};
 
           const id = parsed.weather[0].id;
-          if(id >= 200 && id < 600){
-            copyWeather.description="비";
-          }else if(id >= 600 && id < 700){
-            copyWeather.description = "눈";
-          }else if(id >=801){
-            copyWeather.description = "흐림";
-          }else{
-            copyWeather.description = "맑음";
-          }  
 
-          setWeather(copyWeather);
+            if(id >= 200 && id < 600){
+              changeWeather('rain');
+            }
+            // id값이 600 보다 같거나 크고 700보다 작은경우 눈
+            else if(id >= 600 && id < 700){
+              changeWeather('snow')
+            }
+            // id값이 801 보다 같거나 크면 흐림(구름)
+            else if(id >= 801){
+              changeWeather('cloudy');
+            }
+              // 그 외에는 맑음
+            else{
+              changeWeather('clear');
+            }
+
+          
 
       
     } catch(error){
