@@ -8,17 +8,18 @@ function App() {
   const [weather, setWeather] = useState({
   });
 
-  const weatherDescriptions = {
-    clear: "맑음",
-    cloudy: "흐림",
-    rain : "비",
-    snow: "눈",
-};
+//   const weatherDescriptions = {
+//     clear: "맑음",
+//     cloudy: "흐림",
+//     rain : "비",
+//     snow: "눈",
+// };
 
 // 날씨 상태 변경 함수
-  function changeWeather(weather){
-    
-    setWeather(weather);
+  function changeWeather(condition){
+    const copyWeather = {...weather};
+    copyWeather.description = condition;
+    setWeather(copyWeather);
   }
 
 
@@ -32,16 +33,16 @@ function App() {
 
   async function getWeather(){
       try{
-        const API_KEY="";
+        const API_KEY="6";
 
         const position = await getCurrentPosition();
         const latitude = position.coords.latitude;
         const longitude = position.coords.longitude;
-          const result = await fetch();
-           const parsed = await result.json();
-          // let temp = parsed.main.temp;
-          // temp = Math.round(temp) + "°C";
-
+          const result = await fetch(``)
+          const parsed = await result.json();
+          let temp = parsed.main.temp;
+          temp = Math.round(temp) + "°C";
+ 
           console.log(parsed);
 
           const id = parsed.weather[0].id;
@@ -49,13 +50,13 @@ function App() {
             if(id >= 200 && id < 600){
               changeWeather('rain');
             }
-            // id값이 600 보다 같거나 크고 700보다 작은경우 눈
+            // id값이 600 보다 같거나 고 700보다 작은경우 눈
             else if(id >= 600 && id < 700){
               changeWeather('snow')
             }
             // id값이 801 보다 같거나 크면 흐림(구름)
             else if(id >= 801){
-              changeWeather('cloudy');
+              changeWeather('clouds');
             }
               // 그 외에는 맑음
             else{
@@ -85,10 +86,10 @@ useEffect(()=>{
   return (
     <>
     <header className="header">
-      <button onClick={()=>changeWeather(weather)}>맑음</button>
-      <button onClick={()=>changeWeather(weather)}>흐림</button>
-      <button onClick={()=>changeWeather(weather)}>비</button>
-      <button onClick={()=>changeWeather(weather)}>눈</button>
+      <button onClick={()=>changeWeather('clear')}>맑음</button>
+      <button onClick={()=>changeWeather('cloudy')}>흐림</button>
+      <button onClick={()=>changeWeather('rain')}>비</button>
+      <button onClick={()=>changeWeather('snow')}>눈</button>
     </header>
 
     <div className="snow">
