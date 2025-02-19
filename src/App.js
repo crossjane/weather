@@ -136,8 +136,3 @@ export default App;
 
 
 
-// const boards = [
-//   {id: 1, title: "제목2", description: "내용", createdAt: "2025-02-05", writer: "운영자"},
-//   {id: 2, title: "제목2", description: "내용1", createdAt: "2025-02-05", writer: "운영자2"},
-//   {id: 3, title: "제목3", description: "내용2", createdAt: "2025-02-05", writer: "운영자3"}
-// ]
