@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 
 function App() {
 
-  //동적인 상태 ? 날씨, 온도 , 날씨 description 은 어떻게 생각하지 ? 
   // useState상태 날씨 하나만 만들기 객체로 . 
   const [weather, setWeather] = useState({
     background:"",
@@ -12,14 +11,6 @@ function App() {
     description:""
   });
 
-  // const weatherDescriptions = {
-  //   clear: "맑음",
-  //   cloudy: "흐림",
-  //   rain : "비",
-  //   snow: "눈",
-  // };
-
-// 날씨 상태 변경 함수
 
 
   function getCurrentPosition(){
@@ -41,22 +32,32 @@ function App() {
 
           const id = parsed.weather[0].id;
 
-          // let condition = '맑음음';
+          const copyWeather = {...weather, temperature : Math.round(parsed.main.temp) + "°C"};
 
             if(id >= 200 && id < 600){
-              condition = '비비';
+              weather.background = "linear-gradient(120deg, #4b6cb7, #182848)" ; 
+              weather.description = '비';
+              weather.icon = "🌧️";
             }
             // id값이 600 보다 같거나 고 700보다 작은경우 눈
             else if(id >= 600 && id < 700){
-              condition = '눈눈';
+              weather.background = "linear-gradient(120deg, #e6e9f0, #eef1f5)";
+              weather.description = '눈';
+              weather.icon = "❄️";
             }
             // id값이 801 보다 같거나 크면 흐림(구름)
             else if(id >= 801){
-              condition ='흐림림';
+              weather.background = "linear-gradient(120deg, #89a7b1, #b8c6db)";
+              weather.description ='흐림';
+              weather.icon = "☁️";
+            } else {
+              weather.background = "linear-gradient(120deg, #a1c4fd, #c2e9fb)";
+              weather.description = "맑음";
+              weather.icon = "☀️";
+  
             }
-         
-          //   const temp = Math.round(parsed.main.temp) + "°C";
-          //   setWeather({temp, weatherDescriptions: condition});
+        
+            setWeather(copyWeather);
             
           
 
@@ -67,90 +68,31 @@ function App() {
 }
 
 // 날씨 상태 변경 함수
-function changeWeather(weather) {
-  // const body = document.body;
-  // const description = document.querySelector(".description");
-  // body.className = weather;
+  function changeWeather(condition) {
 
-  // 날씨 설명 업데이트
-  const weatherDescriptions = {
-    clear: "맑음",
-    cloudy: "흐림",
-    rain: "비",
-    snow: "눈",
-  };
-  return weatherDescriptions[weather];
-  
-}
+  const copyWeather={...weather};
 
+  if (condition === "rain"){
+    copyWeather.background = "linear-gradient(120deg, #4b6cb7, #182848)" ; 
+    copyWeather.description = '비';
+    copyWeather.icon = "🌧️";
 
-function weatherDescription(){
-  let koreanWeather = "";
+  }else if(condition === "snow"){
+    copyWeather.background = "linear-gradient(120deg, #e6e9f0, #eef1f5)";
+    copyWeather.description = '눈';
+    copyWeather.icon = "❄️";
 
-  const id = weather.weather[0].id;
-
-  if(id >= 200 && id < 600){
-    koreanWeather = changeWeather('rain');
-  }
-  // id값이 600 보다 같거나 크고 700보다 작은경우 눈
-  else if(id >= 600 && id < 700){
-    koreanWeather = changeWeather('snow')
-  }
-  // id값이 801 보다 같거나 크면 흐림(구름)
-  else if(id >= 801){
-    koreanWeather = changeWeather('cloudy');
-  }
-    // 그 외에는 맑음
-  else{
-    koreanWeather = changeWeather('clear');
+  }else if(condition === "cloudy"){
+    copyWeather.background = "linear-gradient(120deg, #89a7b1, #b8c6db)";
+    copyWeather.description ='흐림';
+    copyWeather.icon = "☁️";
+  }else{
+    copyWeather.background = "linear-gradient(120deg, #a1c4fd, #c2e9fb)";
+    copyWeather.description = "맑음";
+    copyWeather.icon = "☀️";
   }
 
-  return koreanWeather;
-}
-
-function weatherBackground() {
-  const id = weather.weather[0].id;
-  let background = "linear-gradient(120deg, #a1c4fd, #c2e9fb)"
-  
-  if(id >= 200 && id < 600){
-    background = "linear-gradient(120deg, #4b6cb7, #182848)"  
-  }
-  // id값이 600 보다 같거나 크고 700보다 작은경우 눈
-  else if(id >= 600 && id < 700){
-    background = "linear-gradient(120deg, #e6e9f0, #eef1f5)"
-  }
-  // id값이 801 보다 같거나 크면 흐림(구름)
-  else if(id >= 801){
-    background = "linear-gradient(120deg, #89a7b1, #b8c6db)"
-  }
-
-  return background;
-
-}
-
-function weatherIcon() {
-  const id = weather.weather[0].id;
-  let icon = "☀️";
-  
-  if(id >= 200 && id < 600){
-    icon = "🌧️"; 
-  }
-  // id값이 600 보다 같거나 크고 700보다 작은경우 눈
-  else if(id >= 600 && id < 700){
-    icon = "❄️";
-  }
-  // id값이 801 보다 같거나 크면 흐림(구름)
-  else if(id >= 801){
-    icon = "☁️";
-  }
-
-  return icon;
-
-}
-
-
-function changeTemperature() {
-  return Math.round(weather.main.temp) + "°C";
+  setWeather(copyWeather);
 }
 
 useEffect(()=>{
@@ -163,6 +105,10 @@ useEffect(()=>{
   return (
     <>
     <header className="header">
+      <button onClick={()=>changeWeather('clear')}>맑음</button>
+      <button onClick={()=>changeWeather('cloudy')}>흐림</button>
+      <button onClick={()=>changeWeather('rain')}>비</button>
+      <button onClick={()=>changeWeather('snow')}>눈</button>
     </header>
 
     <div className="snow">
@@ -185,12 +131,13 @@ useEffect(()=>{
   );
 }
 
+
 export default App;
 
 
 
-const boards = [
-  {id: 1, title: "제목2", description: "내용", createdAt: "2025-02-05", writer: "운영자"},
-  {id: 2, title: "제목2", description: "내용1", createdAt: "2025-02-05", writer: "운영자2"},
-  {id: 3, title: "제목3", description: "내용2", createdAt: "2025-02-05", writer: "운영자3"}
-]
+// const boards = [
+//   {id: 1, title: "제목2", description: "내용", createdAt: "2025-02-05", writer: "운영자"},
+//   {id: 2, title: "제목2", description: "내용1", createdAt: "2025-02-05", writer: "운영자2"},
+//   {id: 3, title: "제목3", description: "내용2", createdAt: "2025-02-05", writer: "운영자3"}
+// ]
